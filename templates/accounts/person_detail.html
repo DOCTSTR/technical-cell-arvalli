@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nasta Farta Person Details</title>
+
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background:#f4f6f9;
+            margin:0;
+            padding:20px;
+            font-size:14px;
+        }
+
+        .card{
+            max-width:600px;
+            margin:auto;
+            background:#fff;
+            border-radius:8px;
+            padding:20px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            margin-top:0;
+            margin-bottom:15px;
+        }
+
+        .row{
+            margin-bottom:10px;
+        }
+
+        .label{
+            font-weight:bold;
+            color:#333;
+            display:inline-block;
+            width:200px;
+        }
+
+        .value{
+            color:#000;
+        }
+
+        .badge{
+            padding:4px 12px;
+            border-radius:12px;
+            font-weight:bold;
+            font-size:12px;
+        }
+
+        .A{background:#2ecc71;color:#fff}
+        .W{background:#e74c3c;color:#fff}
+        .C{background:#f1c40f;color:#000}
+
+        .actions{
+            margin-top:20px;
+        }
+
+        a{
+            text-decoration:none;
+            background:#2c3e50;
+            color:#fff;
+            padding:8px 14px;
+            border-radius:6px;
+            font-weight:600;
+        }
+
+        a:hover{
+            background:#1f2d3d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Nasta Farta Person Details</h2>
+
+    <div class="row">
+        <span class="label">Name:</span>
+        <span class="value">{{ person.full_name }}</span>
+    </div>
+
+    <div class="row">
+        <span class="label">Status:</span>
+        <span class="badge {% if person.status == 'ARRESTED' %}A{% elif person.status == 'WANTED' %}W{% else %}C{% endif %}">
+            {{ person.status }}
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">Police Station (Taluka):</span>
+        <span class="value">{{ person.taluka }}</span>
+    </div>
+
+    <div class="row">
+        <span class="label">District:</span>
+        <span class="value">{{ person.district }}</span>
+    </div>
+
+    <div class="actions">
+        <a hre

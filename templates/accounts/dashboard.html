@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nasta Farta Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+        .card {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 12px;
+        }
+        .ARVALLI { background: #2ecc71; }
+        .GUJARATSTATE { background: #3498db; }
+        .OUTSIDEGUJARAT { background: #e74c3c; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 85% 15%;
+            gap: 15px;
+        }
+        .scroll-box {
+            max-height: 260px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Nasta Farta Dashboard</h2>
+
+<form method="get">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search anything">
+    <button type="submit">Search</button>
+</form>
+
+<!-- ================= LATEST NASTA ================= -->
+<div class="card">
+    <h3>Latest Nasta Farta (Last 3)</h3>
+    <table>
+        <tr>
+            <th>ID</th><th>Name</th><th>Status</th><th>Taluka</th><th>District</th>
+        </tr>
+        {% for n in latest_nasta %}
+        <tr>
+            <td>{{ n.id }}</td>
+            <td>
+                <!-- SAFE CLICKABLE LINK (NO URL TAG) -->
+                <a href="/nasta/{{ n.id }}/">
+                    {{ n.full_name }}
+                </a>
+            </td>
+            <td><span class="badge {{ n.status }}">{{ n.status }}</span></td>
+            <td>{{ n.taluka }}</td>
+            <td>{{ n.district }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No records found</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- ================= ALL NASTA + DONUT ================= -->
+<div class="grid">
+    <div class="card">
+        <h3>All Nasta Farta Records</h3>
+        <div class="scroll-box">
+            <table>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Status</th><th>Taluka</th><th>District</th>
+                </tr>
+                {% for n in all_nasta %}
+                <tr>
+                    <td>{{ n.id }}</td>
+                    <td>
+                        <a href="/nasta/{{ n.id }}/">
+                            {{ n.full_name }}
+                        </a>
+                    </td>
+                    <td><span class="badge {{ n.status }}">{{ n.status }}</span></td>
+                    <td>{{ n.taluka }}</td>
+                    <td>{{ n.district }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Status Summary</h3>
+        <p>Arvalli District: {{ arvalli_count }}</p>
+        <p>Other Gujarat Districts: {{ gujarat_other_count }}</p>
+        <p>Outside Gujarat: {{ outside_count }}</p>
+        <hr>
+        <p><b>Total Records: {{ total_nasta }}</b></p>
+        <canvas id="nastaDonut"></canvas>
+    </div>
+</div>
+
+<!-- ================= FIR + BAR ================= -->
+<div class="grid">
+    <div class="card">
+        <h3>FIR / Case Register</h3>
+        <div class="scroll-box">
+            <table>
+                <tr>
+                    <th>ID</th><th>FIR Number</th><th>Police Station</th><th>Incident Date</th>
+                </tr>
+                {% for c in cases %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>
+                        <a href="{% url 'dashboard_case_detail' c.id %}">
+                            {{ c.fir_number }}
+                        </a>
+                    </td>
+                    <td>{{ c.police_station }}</td>
+                    <td>{{ c.incident_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>FIR Status</h3>
+        <p>Total FIR: {{ total_fir }}</p>
+        <p>Arrested: {{ arrested_count }}</p>
+        <p>Wanted: {{ wanted_count }}</p>
+        <p>Accused: {{ accused_count }}</p>
+        <canvas id="firBar"></canvas>
+    </div>
+</div>
+
+<!-- ================= CHARTS ================= -->
+<script>
+new Chart(document.getElementById('nastaDonut'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Arvalli', 'Gujarat State', 'Outside Gujarat'],
+        datasets: [{
+            data: [
+                {{ arvalli_count }},
+                {{ gujarat_other_count }},
+                {{ outside_count }}
+            ],
+            backgroundColor: ['#2ecc71', '#3498db', '#e74c3c']
+        }]
+    }
+});
+
+new Chart(document.getElementById('firBar'), {
+    type: 'bar',
+    data: {
+        labels: ['Arrested', 'Wanted', 'Accused'],
+        datasets: [{
+            label: 'FIR Status Count',
+            data: [
+                {{ arrested_count }},
+                {{ wanted_count }},
+                {{ accused_count }}
+            ],
+            backgroundColor: ['#2ecc71', '#e74c3c', '#f1c40f']
+        }]
+    },
+    options: { scales: { y: { beginAtZero: true } } }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FIR Case – Full Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .card {
+            background: #fff;
+            width: 85%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #2c3e50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 6px;
+            font-size: 13px;
+        }
+        .btn.disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        .person-box {
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+            margin-top: 15px;
+            display: flex;
+            gap: 20px;
+        }
+        .photo-box {
+            width: 140px;
+            text-align: center;
+        }
+        .photo-box img {
+            width: 130px;
+            height: 160px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .no-photo {
+            width: 130px;
+            height: 160px;
+            border: 1px dashed #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #777;
+        }
+        .details p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .ARRESTED { background: #2ecc71; color: #fff; }
+        .WANTED { background: #e74c3c; color: #fff; }
+        .ACCUSED { background: #f1c40f; color: #000; }
+        .ARVALLI { background: #3498db; color: #fff; }
+        .GUJARATSTATE { background: #9b59b6; color: #fff; }
+        .OUTSIDEGUJARAT { background: #34495e; color: #fff; }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>FIR Case Details</h2>
+
+    <p><b>FIR Number:</b> {{ case.fir_number }}</p>
+    <p><b>Police Station:</b> {{ case.police_station }}</p>
+    <p><b>Incident Date:</b> {{ case.incident_date }}</p>
+
+    <!-- SAFE BUTTONS (NO BROKEN URLS) -->
+    <a class="btn disabled">Print PDF (Coming Soon)</a>
+    <a class="btn disabled">Export Excel (Coming Soon)</a>
+    <a class="btn" href="{% url 'dashboard' %}">Back to Dashboard</a>
+
+    <h3 style="margin-top:20px;">Persons Involved in this FIR</h3>
+
+    {% for p in persons %}
+    <div class="person-box">
+
+        <div class="photo-box">
+            {% if p.photo %}
+                <img src="{{ p.photo.url }}" alt="Person Photo">
+            {% else %}
+                <div class="no-photo">No Photo</div>
+            {% endif %}
+        </div>
+
+        <div class="details">
+            <p><b>Name:</b> {{ p.full_name }}</p>
+
+            <p>
+                <b>Status:</b>
+                <span class="badge {{ p.status }}">
+                    {{ p.status }}
+                </span>
+            </p>
+
+            <p><b>Mobile:</b> {{ p.mobile_numbers|default:"Not available" }}</p>
+            <p><b>Address:</b> {{ p.address|default:"Not available" }}</p>
+            <p><b>Bank Details:</b> {{ p.bank_details|default:"Not available" }}</p>
+            <p><b>Family Details:</b> {{ p.family_details|default:"Not available" }}</p>
+            <p><b>URLs:</b> {{ p.urls|default:"Not available" }}</p>
+        </div>
+
+    </div>
+    {% empty %}
+        <p>No persons linked to this FIR.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard PDF</title>
+    <style>
+        body { font-family: Arial; font-size: 12px; }
+        h1 { border-bottom: 2px solid #000; }
+    </style>
+</head>
+<body>
+
+<h1>Dashboard Summary</h1>
+
+<h3>Nasta Farta</h3>
+<p>Arrested: {{ nasta_chart.ARRESTED }}</p>
+<p>Wanted: {{ nasta_chart.WANTED }}</p>
+<p>Accused: {{ nasta_chart.ACCUSED }}</p>
+<p><b>Total:</b> {{ nasta_chart.TOTAL }}</p>
+
+<hr>
+
+<h3>FIR</h3>
+<p>Arrested: {{ fir_chart.ARRESTED }}</p>
+<p>Wanted: {{ fir_chart.WANTED }}</p>
+<p>Accused: {{ fir_chart.ACCUSED }}</p>
+<p><b>Total FIR:</b> {{ fir_chart.TOTAL }}</p>
+
+</body>
+</html>

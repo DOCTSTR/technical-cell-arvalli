@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FIR Detail</title>
+<style>
+body{font-family:Arial;background:#f4f6f9;padding:20px}
+.card{background:#fff;padding:20px;border-radius:8px;margin-bottom:15px}
+.btn{background:#2c3e50;color:#fff;padding:6px 10px;border-radius:6px;text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>FIR {{ case.fir_number }}</h2>
+<p><b>Police Station:</b> {{ case.police_station }}</p>
+<p><b>Date:</b> {{ case.incident_date }}</p>
+<a class="btn" href="{% url 'fir_pdf' case.id %}" target="_blank">Print PDF</a>
+</div>
+
+<div class="card">
+<h3>Persons</h3>
+{% for p in persons %}
+<p>{{ p.full_name }} ({{ p.status }})</p>
+{% endfor %}
+</div>
+
+<a class="btn" href="{% url 'dashboard' %}">Back</a>
+
+</body>
+</html>

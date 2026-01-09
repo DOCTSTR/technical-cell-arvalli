@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nasta Farta PDF</title>
+    <style>
+        body { font-family: Arial; font-size: 14px; }
+        h2 { border-bottom: 1px solid #000; }
+        .row { margin-bottom: 8px; }
+        .label { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h2>{{ person.full_name }}</h2>
+
+<div class="row"><span class="label">Status:</span> {{ person.status }}</div>
+<div class="row"><span class="label">Taluka:</span> {{ person.taluka }}</div>
+<div class="row"><span class="label">District:</span> {{ person.district }}</div>
+<div class="row"><span class="label">Mobile:</span> {{ person.mobile_numbers|default:"Not available" }}</div>
+<div class="row"><span class="label">Address:</span> {{ person.address }}</div>
+<div class="row"><span class="label">Bank Details:</span> {{ person.bank_details }}</div>
+<div class="row"><span class="label">Family Details:</span> {{ person.family_details }}</div>
+<div class="row"><span class="label">URLs:</span> {{ person.urls }}</div>
+
+</body>
+</html>

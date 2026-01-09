@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FIR Case – Print</title>
+    <style>
+        body { font-family: Arial; }
+        .badge { padding: 3px 6px; font-weight: bold; }
+        .ARRESTED { background: green; color: white; }
+        .WANTED { background: red; color: white; }
+        .ACCUSED { background: orange; }
+    </style>
+</head>
+<body onload="window.print()">
+
+<h2>FIR {{ case.fir_number }}</h2>
+<p><b>Police Station:</b> {{ case.police_station }}</p>
+<p><b>Date:</b> {{ case.incident_date }}</p>
+
+<hr>
+
+<h3>Persons Involved</h3>
+
+{% for p in persons %}
+    <p><b>Name:</b> {{ p.full_name }}</p>
+    <p><b>Status:</b>
+        <span class="badge {{ p.status }}">{{ p.status }}</span>
+    </p>
+    <p><b>Mobile:</b> {{ p.mobile_numbers }}</p>
+    <p><b>Address:</b> {{ p.address }}</p>
+    <hr>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nasta Farta – Full Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; background:#f4f6f8; }
+        .container { max-width:900px; margin:40px auto; }
+        .card { background:#fff; padding:22px; border-radius:6px; }
+
+        h2 { margin-top:0; }
+
+        .badge {
+            padding:4px 10px;
+            border-radius:12px;
+            font-weight:bold;
+            font-size:13px;
+            color:#fff;
+        }
+        .ARRESTED { background:#2ecc71; }
+        .WANTED { background:#e74c3c; }
+        .ACCUSED { background:#f1c40f; color:#000; }
+
+        .row {
+            display:flex;
+            margin-bottom:10px;
+            font-size:16px;
+        }
+        .label {
+            width:220px;
+            font-weight:bold;
+        }
+
+        .btn {
+            display:inline-block;
+            padding:8px 14px;
+            background:#2c3e50;
+            color:#fff;
+            text-decoration:none;
+            border-radius:4px;
+            margin-top:15px;
+            margin-right:10px;
+        }
+
+        .photo-box {
+            width:150px;
+            height:150px;
+            border:1px dashed #ccc;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:15px;
+        }
+        .photo-box img {
+            max-width:100%;
+            max-height:100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h2>{{ person.full_name }}</h2>
+
+        <div class="photo-box">
+            {% if person.photo %}
+                <img src="{{ person.photo.url }}">
+            {% else %}
+                No Photo
+            {% endif %}
+        </div>
+
+        <div class="row"><span class="label">Status:</span>
+            <span class="badge {{ person.status }}">{{ person.status }}</span>
+        </div>
+        <div class="row"><span class="label">Taluka (Police Station):</span>{{ person.taluka }}</div>
+        <div class="row"><span class="label">District:</span>{{ person.district }}</div>
+        <div class="row"><span class="label">Mobile:</span>{{ person.mobile_numbers|default:"Not available" }}</div>
+        <div class="row"><span class="label">Address:</span>{{ person.remarks|default:"Not available" }}</div>
+        <div class="row"><span class="label">Pincode:</span>{{ person.pincode|default:"-" }}</div>
+        <div class="row"><span class="label">URLs:</span>{{ person.urls|default:"-" }}</div>
+        <div class="row"><span class="label">Family Details:</span>{{ person.family_details|default:"-" }}</div>
+        <div class="row"><span class="label">Created:</span>{{ person.created_at }}</div>
+
+        {% if role != "VIEWER" %}
+            <a class="btn" href="{% url 'person_pdf' person.id %}">Print PDF</a>
+        {% endif %}
+
+        <a class="btn" href="{% url 'dashboard' %}">Back to Dashboard</a>
+
+    </div>
+</div>
+
+</body>
+</html>
